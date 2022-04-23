@@ -3,6 +3,13 @@ from ConOut import ConOut
 from time import sleep
 import socket
 
+
+def swap(controllers):
+    nums = i for i in range(0,len(controllers))
+    nums.shuffle()
+    for controller in controllers:
+        controller.set_out(nums.pop())
+
 SA1 = 23
 SA2 = 33
 SA3 = 29
@@ -62,6 +69,8 @@ print (s.recv(1024).decode())
 
 while(True):
     if mode == 'Normal':
-        sleep(0.01)
+        sleep(5)
+        swap([out1, out2, out3, out4])
+    
 
 GPIO.cleanup()
