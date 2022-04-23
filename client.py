@@ -5,6 +5,7 @@ import socket
 import random
 import threading
 
+global t_lock
 global mode
 global s
 global modes
@@ -19,6 +20,8 @@ def swap(controllers):
 
 def checkIncoming():
     global t_lock
+    global mode
+    global modes
     print("Starting threading...")
     while 1:
         data, addr = s.recvfrom(1024)
@@ -103,9 +106,11 @@ while running:
     elif mode == '3PShuffle':
         sleep(randint(2,100))
         swap([out1, out2, out3])
+        s.send('Swapped'.encode())
     elif mode == '4PShuffle':
         sleep(randint(2,100))
         swap([out1, out2, out3, out4])
+        s.send('Swapped'.encode())
     elif mode == 'Exit':
         running = False
     

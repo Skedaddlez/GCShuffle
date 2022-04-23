@@ -1,4 +1,21 @@
-import socket			
+import socket
+
+global t_lock
+
+def checkIncoming():
+    global t_lock
+    print("Starting threading...")
+    while 1:
+        data, addr = s.recvfrom(1024)
+        data = data.decode()
+
+        if not data:
+            continue
+        with t_lock:
+            print(data)
+            t_lock.notify()
+
+t_lock = threading.Condition()
 
 # next create a socket object
 s = socket.socket()		
@@ -22,9 +39,13 @@ print ('Got connection from', addr )
 # send a thank you message to the client. encoding to send byte type.
 c.send('Thank you for connecting'.encode())
 
+Central = threading.Thread(target=checkIncoming)
+Central.daemon = True
+Central.start()
+
 # a forever loop until we interrupt it or
 # an error occurs
 msg = ""
 while msg != "Exit":
-    msg = input("Enter command: ")
+    msg = input()
     c.send(msg.encode())
