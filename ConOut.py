@@ -11,9 +11,9 @@ class ConOut:
 
     def set_out(self, num):
         bin_num = bin(num)
-        a_state = GPIO.HIGH if int(bin_num[-1]) == 1 else GPIO.LOW
+        a_state = GPIO.HIGH if bin_num[-1] == '1' else GPIO.LOW
         GPIO.output(self.a, a_state)
-        b_state = GPIO.HIGH if int(bin_num[-2]) == 1 else GPIO.LOW
+        b_state = GPIO.HIGH if bin_num[-2] == '1' else GPIO.LOW
         GPIO.output(self.b, b_state)
 
     def enable(self, state):
