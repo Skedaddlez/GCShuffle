@@ -3,6 +3,7 @@ from ConOut import ConOut
 from time import sleep
 import socket
 import random
+import threading
 
 global mode
 global s
