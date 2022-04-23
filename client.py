@@ -63,6 +63,5 @@ print (s.recv(1024).decode())
 while(True):
     if mode == 'Normal':
         sleep(0.01)
-    else if
 
 GPIO.cleanup()
