@@ -92,7 +92,7 @@ s.connect((ip, port))
 # receive data from the server and decoding to get the string.
 print (s.recv(1024).decode())
 
-Central = threading.Thread(target=self.checkIncoming)
+Central = threading.Thread(target=checkIncoming)
 Central.daemon = True
 Central.start()
 
