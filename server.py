@@ -18,7 +18,7 @@ print ("socket is listening")
 # a forever loop until we interrupt it or
 # an error occurs
 msg = ""
-while msg is not "exit":
+while msg != "exit":
     # Establish connection with client.
     c, addr = s.accept()	
     print ('Got connection from', addr )

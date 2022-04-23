@@ -2,11 +2,12 @@ import RPi.GPIO as GPIO
 from ConOut import ConOut
 from time import sleep
 import socket
+import random
 
 
 def swap(controllers):
     nums = list(range(0, len(controllers)))
-    nums.shuffle()
+    random.shuffle(nums)
     for controller in controllers:
         controller.set_out(nums.pop())
 
