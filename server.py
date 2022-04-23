@@ -17,10 +17,13 @@ print ("socket is listening")
 
 # a forever loop until we interrupt it or
 # an error occurs
-while True:
+msg = ""
+while msg is not "exit":
     # Establish connection with client.
     c, addr = s.accept()	
     print ('Got connection from', addr )
 
     # send a thank you message to the client. encoding to send byte type.
     c.send('Thank you for connecting'.encode())
+
+    msg = input("Enter command: ")

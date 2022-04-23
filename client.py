@@ -5,7 +5,7 @@ import socket
 
 
 def swap(controllers):
-    nums = i for i in range(0,len(controllers))
+    nums = list(range(0, len(controllers)))
     nums.shuffle()
     for controller in controllers:
         controller.set_out(nums.pop())
