@@ -17,7 +17,7 @@ def swap(controllers):
     for controller in controllers:
         controller.set_out(nums.pop())
 
-def checkIncoming(self):
+def checkIncoming():
     global t_lock
     print("Starting threading...")
     while 1:

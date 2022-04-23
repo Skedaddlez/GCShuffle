@@ -15,15 +15,16 @@ print ("socket binded to %s" %(port))
 s.listen(5)	
 print ("socket is listening")		
 
+# Establish connection with client.
+c, addr = s.accept()	
+print ('Got connection from', addr )
+
+# send a thank you message to the client. encoding to send byte type.
+c.send('Thank you for connecting'.encode())
+
 # a forever loop until we interrupt it or
 # an error occurs
 msg = ""
-while msg != "exit":
-    # Establish connection with client.
-    c, addr = s.accept()	
-    print ('Got connection from', addr )
-
-    # send a thank you message to the client. encoding to send byte type.
-    c.send('Thank you for connecting'.encode())
-
+while msg != "Exit":
     msg = input("Enter command: ")
+    c.send(msg.encode())
