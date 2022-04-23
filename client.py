@@ -4,12 +4,34 @@ from time import sleep
 import socket
 import random
 
+global mode
+global s
+global modes
+modes = ['Normal','3PShuffle', '4PShuffle', 'Exit']
+
 
 def swap(controllers):
     nums = list(range(0, len(controllers)))
     random.shuffle(nums)
     for controller in controllers:
         controller.set_out(nums.pop())
+
+def checkIncoming(self):
+    global t_lock
+    print("Starting threading...")
+    while 1:
+        data, addr = s.recvfrom(1024)
+        data = data.decode()
+
+        if not data:
+            continue
+        with t_lock:
+            if data in modes:
+                mode = data
+                print("Mode is now " + mode)
+            else:
+                print("MSG unknown.")
+            t_lock.notify()
 
 SA1 = 23
 SA2 = 33
@@ -55,6 +77,7 @@ out3.set_out(2)
 out4.set_out(3)
 
 mode = 'Normal'
+t_lock = threading.Condition()
 
 # Create a socket object
 s = socket.socket()        
@@ -68,10 +91,22 @@ s.connect((ip, port))
 # receive data from the server and decoding to get the string.
 print (s.recv(1024).decode())
 
-while(True):
+Central = threading.Thread(target=self.checkIncoming)
+Central.daemon = True
+Central.start()
+
+running = True
+while running:
     if mode == 'Normal':
-        sleep(5)
+        sleep(0.01)
+    elif mode == '3PShuffle':
+        sleep(randint(2,100))
+        swap([out1, out2, out3])
+    elif mode == '4PShuffle':
+        sleep(randint(2,100))
         swap([out1, out2, out3, out4])
+    elif mode == 'Exit':
+        running = False
     
 
 GPIO.cleanup()
