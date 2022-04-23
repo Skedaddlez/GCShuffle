@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 from ConOut import ConOut
 from time import sleep
+import socket
 
 SA1 = 23
 SA2 = 33
@@ -45,5 +46,23 @@ out2.set_out(1)
 out3.set_out(2)
 out4.set_out(3)
 
+mode = 'Normal'
+
+# Create a socket object
+s = socket.socket()        
+
+# Define the port on which you want to connect
+port = 12345   
+ip = socket.gethostbyname('Archimedes')
+# connect to the server on local computer
+s.connect((ip, port))
+
+# receive data from the server and decoding to get the string.
+print (s.recv(1024).decode())
+
 while(True):
-    sleep(1)
+    if mode == 'Normal':
+        sleep(0.01)
+    else if
+
+GPIO.cleanup()
