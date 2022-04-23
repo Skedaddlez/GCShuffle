@@ -104,11 +104,11 @@ while running:
     if mode == 'Normal':
         sleep(0.01)
     elif mode == '3PShuffle':
-        sleep(randint(2,100))
+        sleep(random.randint(2,100))
         swap([out1, out2, out3])
         s.sendall('Swapped'.encode())
     elif mode == '4PShuffle':
-        sleep(randint(2,100))
+        sleep(random.randint(2,100))
         swap([out1, out2, out3, out4])
         s.sendall('Swapped'.encode())
     elif mode == 'Exit':

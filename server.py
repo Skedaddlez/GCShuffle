@@ -2,12 +2,14 @@ import socket
 import threading
 
 global t_lock
+global c
 
 def checkIncoming():
     global t_lock
+    global c
     print("Starting threading...")
     while 1:
-        data, addr = s.recvfrom(1024)
+        data = c.recv(1024)
         data = data.decode()
 
         if not data:
