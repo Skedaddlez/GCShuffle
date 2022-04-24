@@ -21,7 +21,8 @@ def checkIncoming():
             print(data)
             
             # Playing the converted file
-            playsound("audio.wav")
+            audio_file = os.path.dirname(__file__) + '\\audio.wav'
+            playsound(audio_file)
             t_lock.notify()
 
 t_lock = threading.Condition()

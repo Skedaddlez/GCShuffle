@@ -85,21 +85,18 @@ out2 = ConOut(A2, B2, EN2)
 out3 = ConOut(A3, B3, EN3)
 out4 = ConOut(A4, B4, EN4)
 
-out1.set_out(0)
-out2.set_out(1)
-out3.set_out(2)
-out4.set_out(3)
-
 modes = {'Normal': modes.Normal(out1, out2, out3, out4, s),
          'Shuffle2P': modes.Shuffle2P(out1, out2, out3, out4, s),
          'Shuffle3P': modes.Shuffle3P(out1, out2, out3, out4, s),
          'Shuffle4P': modes.Shuffle4P(out1, out2, out3, out4, s),
          'Shuffle2P2P': modes.Shuffle2P2P(out1, out2, out3, out4, s),
          'Shuffle4I1O': modes.Shuffle4I1O(out1, out2, out3, out4, s),
+         'Normal1I4O':modes.Normal1I4O(out1, out2, out3, out4, s),
          'Exit': None
          }
 
 mode = 'Normal'
+modes[mode].initialise()
 
 t_lock = threading.Condition()
 Central = threading.Thread(target=checkIncoming)

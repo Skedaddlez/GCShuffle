@@ -157,3 +157,21 @@ class Shuffle4I1O:
             self.last_swap = time()
             self.time_to_next_swap = random.randint(2, 100)
             self.sock.sendall('Swapped'.encode())
+
+class Normal1I4O:
+    def __init__(self, out1, out2, out3, out4, sock):
+        self.out1 = out1
+        self.out2 = out2
+        self.out3 = out3
+        self.out4 = out4
+        self.sock = sock
+        pass
+
+    def initialise(self):
+        self.out1.set_out(0)
+        self.out2.set_out(0)
+        self.out3.set_out(0)
+        self.out4.set_out(0)
+
+    def loop(self):
+        pass
