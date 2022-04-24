@@ -1,5 +1,8 @@
 import socket
 import threading
+from gtts import gTTS
+import os
+from playsound import playsound
 
 global t_lock
 global c
@@ -16,6 +19,9 @@ def checkIncoming():
             continue
         with t_lock:
             print(data)
+            
+            # Playing the converted file
+            playsound("audio.wav")
             t_lock.notify()
 
 t_lock = threading.Condition()

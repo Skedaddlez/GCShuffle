@@ -1,26 +1,22 @@
 import RPi.GPIO as GPIO
 from ConOut import ConOut
-from time import sleep
+from time import sleep, localtime
 import socket
 import random
 import threading
+import modes
 
 global t_lock
 global mode
+global last_time
 global s
 global modes
-modes = ['Normal','3PShuffle', '4PShuffle', 'Exit']
 
-
-def swap(controllers):
-    nums = list(range(0, len(controllers)))
-    random.shuffle(nums)
-    for controller in controllers:
-        controller.set_out(nums.pop())
 
 def checkIncoming():
     global t_lock
     global mode
+    global last_time
     global modes
     print("Starting threading...")
     while 1:
@@ -30,12 +26,26 @@ def checkIncoming():
         if not data:
             continue
         with t_lock:
-            if data in modes:
+            if data in modes.keys():
                 mode = data
+                modes[mode].initialise()
                 print("Mode is now " + mode)
             else:
                 print("MSG unknown.")
             t_lock.notify()
+
+
+# Create a socket object
+s = socket.socket()
+
+# Define the port on which you want to connect
+port = 12345
+ip = socket.gethostbyname('Archimedes')
+# connect to the server on local computer
+s.connect((ip, port))
+
+# receive data from the server and decoding to get the string.
+print (s.recv(1024).decode())
 
 SA1 = 23
 SA2 = 33
@@ -80,39 +90,28 @@ out2.set_out(1)
 out3.set_out(2)
 out4.set_out(3)
 
+modes = {'Normal': modes.Normal(out1, out2, out3, out4, s),
+         'Shuffle2P': modes.Shuffle2P(out1, out2, out3, out4, s),
+         'Shuffle3P': modes.Shuffle3P(out1, out2, out3, out4, s),
+         'Shuffle4P': modes.Shuffle4P(out1, out2, out3, out4, s),
+         'Shuffle2P2P': modes.Shuffle2P2P(out1, out2, out3, out4, s),
+         'Shuffle4I1O': modes.Shuffle4I1O(out1, out2, out3, out4, s),
+         'Exit': None
+         }
+
 mode = 'Normal'
+
 t_lock = threading.Condition()
-
-# Create a socket object
-s = socket.socket()        
-
-# Define the port on which you want to connect
-port = 12345   
-ip = socket.gethostbyname('Archimedes')
-# connect to the server on local computer
-s.connect((ip, port))
-
-# receive data from the server and decoding to get the string.
-print (s.recv(1024).decode())
-
 Central = threading.Thread(target=checkIncoming)
 Central.daemon = True
 Central.start()
 
 running = True
 while running:
-    if mode == 'Normal':
-        sleep(0.01)
-    elif mode == '3PShuffle':
-        sleep(random.randint(2,100))
-        swap([out1, out2, out3])
-        s.sendall('Swapped'.encode())
-    elif mode == '4PShuffle':
-        sleep(random.randint(2,100))
-        swap([out1, out2, out3, out4])
-        s.sendall('Swapped'.encode())
-    elif mode == 'Exit':
+    if mode == 'Exit':
         running = False
+    else:
+        modes[mode].loop()
     
 
 GPIO.cleanup()
