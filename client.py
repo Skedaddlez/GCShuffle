@@ -40,7 +40,7 @@ s = socket.socket()
 
 # Define the port on which you want to connect
 port = 12345
-ip = socket.gethostbyname('Archimedes')
+ip = socket.gethostbyname('Roxanne')
 # connect to the server on local computer
 s.connect((ip, port))
 
